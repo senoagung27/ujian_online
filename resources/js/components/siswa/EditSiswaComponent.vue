@@ -11,7 +11,7 @@
                     <div class="form-group">
                       <label for="name" class="control-label col-md-3">Email Siswa</label>
                       <div class="col-md-8">
-                        <input type="email" v-model="form.email" name="email" class="form-control">
+                        <input type="email" name="email" v-model="form.email"  class="form-control">
                       </div>
                     </div>
                     <div class="form-group">
@@ -24,21 +24,21 @@
                     <div class="form-group">
                       <label for="company" class="control-label col-md-3">Kelas</label>
                       <div class="col-md-8">
-                        <input type="text" v-model="form.kelas"  name="kelas" id="company" class="form-control">
+                        <input type="text" v-model="form.kelas" name="kelas" id="company" class="form-control">
                       </div>
                     </div>
 
                     <div class="form-group">
                       <label for="email" class="control-label col-md-3">Nik Siswa</label>
                       <div class="col-md-8">
-                        <input type="text" v-model="form.nik"  name="nik" id="email" class="form-control">
+                        <input type="text" v-model="form.nik" name="nik" id="email" class="form-control">
                       </div>
                     </div>
 
                     <div class="form-group">
                       <label for="phone" class="control-label col-md-3">Jenis Kelasmin</label>
                       <div class="col-md-8">
-                        <select name="jenis_kelamin" v-model="form.jenis_kelamin"  class="form-control">
+                        <select name="jenis_kelamin" v-model="form.jenis_kelamin" class="form-control">
                           <option value="Laki-Laki">Laki-Laki</option>
                           <option value="Perempuan">Perempuan</option>
                         </select>
@@ -54,7 +54,7 @@
                     <div class="form-group">
                       <label for="group" class="control-label col-md-3">Password</label>
                       <div class="col-md-5">
-                       <input type="password"  v-model="form.password" name="password" class="form-control">
+                       <input type="password" v-model="form.password" name="password" class="form-control">
                       </div>
 
                     </div>
@@ -68,7 +68,7 @@
                 <div class="col-md-8">
                   <div class="row">
                     <div class="col-md-offset-3 col-md-6">
-                      <button type="submit" @click="save()"  class="btn btn-primary">Simpan</button>
+                      <button type="submit" @click="submit()" class="btn btn-primary">Edit</button>
                     <router-link to="/siswa" class="btn btn-default">Batal</router-link>
                     </div>
                   </div>
@@ -79,31 +79,23 @@
         </div>
 </template>
 <script>
-import swal from 'sweetalert';
 export default {
-  data(){
-    return{
-      form:{
-              email:null,
-              name:null,
-              nik:null,
-              kelas:null,
-              alamat:null,
-              password:null,
-              jenis_kelamin:null
-      }
-    }
-  },
-  methods:{
-    save(){
-       axios.post('/api/user',this.form)
+    data(){
+        return{
+            form:{}
+        }
+    },
+    created(){
+        axios.get(`/api/user/${this.$route.params.id}`)
+        .then(res=>this.form=res.data.data)
+    },
+     methods:{
+       submit(){
+           axios.put(`/api/user/${this.$route.params.id}`,this.form)
            .then((response)=>{
-                swal("Berhasil Memasukan Data", {
-                        icon: "success",
-                    });
-               this.$router.push({name:'siswa'})
+                this.$router.push({name:'siswa'})
            })
-    }
-  }
+       }
+     }
 }
 </script>

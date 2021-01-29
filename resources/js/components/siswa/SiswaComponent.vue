@@ -11,7 +11,7 @@
                   <div class="media">
                     <div class="media-left">
                       <a href="#">
-                        <img class="media-object" src="https://www.unpak.ac.id/images/Logo_Unpak.jpg" height="100px" width="100px" alt="...">
+                        <img class="media-object" src="https://cdn2.vectorstock.com/i/1000x1000/17/61/male-avatar-profile-picture-vector-10211761.jpg" height="100px" width="100px" alt="...">
                       </a>
                     </div>
                     <div class="media-body">
@@ -28,16 +28,10 @@
                 </td>
                 <td width="100" class="middle">
                   <div>
-                    <router-link class="btn btn-circle btn-default btn-xs" to="/siswa/edit"><i class="fas fa-pencil-alt " aria-hidden="true"></i></router-link>
-                    <a href="#"  class="btn btn-circle btn-danger btn-xs" title="Hapus">
-                    <i class="fas fa-trash"></i>
-                    </a>
-                    <a href="#"  class="btn btn-circle btn-danger btn-xs" title="Aktifkan">
-                     <i class="fas fa-check"></i>
-                    </a>
-                     <a href="#"  class="btn btn-circle btn-danger btn-xs" title="Non Aktifkan">
-                    <i class="fas fa-power-off"></i>
-                    </a>
+                    <router-link class="btn btn-circle btn-default btn-xs" :to="{name:'siswa_edit',params:{id:siswas.android_id}}"><i class="fas fa-pencil-alt " aria-hidden="true"></i></router-link>
+                    <a href="#" @click="hapus(siswas.android_id)"  class="btn btn-circle btn-danger btn-xs" title="Hapus">
+                    <i class="fas fa-trash"></i></a>
+
                   </div>
                 </td>
               </tr>
@@ -47,6 +41,7 @@
 </template>
 <script>
 export default {
+
   data(){
     return{
       siswa:{}
@@ -55,6 +50,32 @@ export default {
   created(){
     axios.get("/api/user")
     .then(res=>this.siswa=res.data.data)
+  },
+  methods:{
+    hapus(android_id){
+       swal({
+                    title: "Apakah Anda Yakin Untuk Menghapus?",
+                    text: "Jika Yakin Tekan Tombol ok",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+              })
+              .then((willDelete)=>{
+                  if(willDelete){
+                    axios.delete(`/api/user/${android_id}`)
+                    swal("Berhasil Menghapus Data!", {
+                        icon: "success",
+                    });
+                        this.getUser()
+                  }else{
+                       swal("Gagal Untuk Menghapus!");
+                  }
+              })
+        },
+        getUser(){
+           axios.get("/api/user")
+          .then(res=>this.siswa=res.data.data)
+        }
   }
 
 }
