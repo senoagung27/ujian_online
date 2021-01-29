@@ -5,7 +5,7 @@
                </div>
           <div class="panel panel-info">
             <table class="table">
-              <tr>
+              <tr v-for="hasils in hasil" :key="hasils.index">
                 <td class="middle">
                   <div class="media">
                     <div class="media-left">
@@ -14,28 +14,28 @@
                         </a>
                     </div>
                     <div class="media-body">
-                      <h4 class="media-heading">Keterangan : Keterangan</h4>
+                      <h4 class="media-heading">Keterangan : {{hasils.keterangan}}</h4>
                       <address>
-                        Kelas          :  3<br>
-                        Nama Siswa     : Andi Hoerudin<br>
-                        Jenis Kelasmin : Laki Laki<br>
-                        Nik            : 32919191
+                        Kelas          :  {{hasils.Kelas}}<br>
+                        Nama Siswa     :  {{hasils.Nama}}<br>
+                        Jenis Kelasmin :  {{hasils.jenis_kelamin}}<br>
+                        Nik            :  {{hasils.nik}}
                       </address>
                     </div>
                     <div class="media-body">
                       <h4 class="media-heading">Total Soal: 10</h4>
                       <address>
-                        Jawaban Benar: 20<br>
-                        Jawaban Salah: 30<br>
-                        Jawaban Kosong: 0<br>
-                        Nilai Anda : 40
+                        Jawaban Benar: {{hasils.Benar}}<br>
+                        Jawaban Salah: {{hasils.Salah}}<br>
+                        Jawaban Kosong: {{hasils.Kosong}}<br>
+                        Nilai Anda : {{hasils.Nilai}}
                       </address>
                     </div>
                   </div>
                 </td>
                 <td width="100" class="middle">
                   <div>
-                    <a href="#" class="btn btn-circle btn-danger btn-xs" title="Hapus">
+                    <a href="#" @click="hapus(hasils.id)" class="btn btn-circle btn-danger btn-xs" title="Hapus">
                     <i class="fas fa-trash"></i>
                     </a>
                   </div>
@@ -47,7 +47,40 @@
 </template>
 <script>
 export default {
-
+   data(){
+     return{
+       hasil:{}
+     }
+   },
+   methods:{
+     hapus(id){
+          swal({
+                    title: "Apakah Anda Yakin Untuk Menghapus?",
+                    text: "Jika Yakin Tekan Tombol ok",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+              })
+              .then((willDelete)=>{
+                  if(willDelete){
+                    axios.delete(`/api/nilai/${id}`)
+                    swal("Berahasil Menghapus Data!", {
+                        icon: "success",
+                    });
+                        this.getHasil()
+                  }else{
+                       swal("Gagal Untuk Menghapus!");
+                  }
+              })
+     },
+      getHasil(){
+           axios.get("/api/nilai")
+           .then(res=>this.hasil=res.data.data)
+       }
+   },
+   created(){
+       this.getHasil();
+   }
 }
 </script>
 

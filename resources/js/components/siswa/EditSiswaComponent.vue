@@ -68,7 +68,7 @@
                 <div class="col-md-8">
                   <div class="row">
                     <div class="col-md-offset-3 col-md-6">
-                      <button type="submit" @click="submit()" class="btn btn-primary">Edit</button>
+                      <button type="submit" @click="submit()" class="btn btn-primary">Simpan</button>
                     <router-link to="/siswa" class="btn btn-default">Batal</router-link>
                     </div>
                   </div>
