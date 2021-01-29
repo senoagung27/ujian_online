@@ -1800,7 +1800,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      hasil: {}
+    };
+  },
+  methods: {
+    hapus: function hapus(id) {
+      var _this = this;
+
+      swal({
+        title: "Apakah Anda Yakin Untuk Menghapus?",
+        text: "Jika Yakin Tekan Tombol ok",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+      }).then(function (willDelete) {
+        if (willDelete) {
+          axios["delete"]("/api/nilai/".concat(id));
+          swal("Berahasil Menghapus Data!", {
+            icon: "success"
+          });
+
+          _this.getHasil();
+        } else {
+          swal("Gagal Untuk Menghapus!");
+        }
+      });
+    },
+    getHasil: function getHasil() {
+      var _this2 = this;
+
+      axios.get("/api/nilai").then(function (res) {
+        return _this2.hasil = res.data.data;
+      });
+    }
+  },
+  created: function created() {
+    this.getHasil();
+  }
+});
 
 /***/ }),
 
@@ -57449,56 +57489,48 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-9" }, [
+  return _c("div", { staticClass: "col-md-9" }, [
+    _c(
+      "div",
+      { staticClass: "panel-heading", staticStyle: { color: "white" } },
+      [_vm._v("\n            Hasil Ujian Siswa\n           ")]
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "panel panel-info" }, [
       _c(
-        "div",
-        { staticClass: "panel-heading", staticStyle: { color: "white" } },
-        [_vm._v("\n            Hasil Ujian Siswa\n           ")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "panel panel-info" }, [
-        _c("table", { staticClass: "table" }, [
-          _c("tr", [
+        "table",
+        { staticClass: "table" },
+        _vm._l(_vm.hasil, function(hasils) {
+          return _c("tr", { key: hasils.index }, [
             _c("td", { staticClass: "middle" }, [
               _c("div", { staticClass: "media" }, [
-                _c("div", { staticClass: "media-left" }, [
-                  _c("a", { attrs: { href: "#" } }, [
-                    _c("img", {
-                      staticClass: "media-object",
-                      attrs: {
-                        src:
-                          "https://cdn2.vectorstock.com/i/1000x1000/17/61/male-avatar-profile-picture-vector-10211761.jpg",
-                        height: "100px",
-                        width: "100px",
-                        alt: "..."
-                      }
-                    })
-                  ])
-                ]),
+                _vm._m(0, true),
                 _vm._v(" "),
                 _c("div", { staticClass: "media-body" }, [
                   _c("h4", { staticClass: "media-heading" }, [
-                    _vm._v("Keterangan : Keterangan")
+                    _vm._v("Keterangan : " + _vm._s(hasils.keterangan))
                   ]),
                   _vm._v(" "),
                   _c("address", [
-                    _vm._v("\n                    Kelas          :  3"),
-                    _c("br"),
                     _vm._v(
-                      "\n                    Nama Siswa     : Andi Hoerudin"
+                      "\n                    Kelas          :  " +
+                        _vm._s(hasils.Kelas)
                     ),
                     _c("br"),
-                    _vm._v("\n                    Jenis Kelasmin : Laki Laki"),
+                    _vm._v(
+                      "\n                    Nama Siswa     :  " +
+                        _vm._s(hasils.Nama)
+                    ),
                     _c("br"),
                     _vm._v(
-                      "\n                    Nik            : 32919191\n                  "
+                      "\n                    Jenis Kelasmin :  " +
+                        _vm._s(hasils.jenis_kelamin)
+                    ),
+                    _c("br"),
+                    _vm._v(
+                      "\n                    Nik            :  " +
+                        _vm._s(hasils.nik) +
+                        "\n                  "
                     )
                   ])
                 ]),
@@ -57509,14 +57541,25 @@ var staticRenderFns = [
                   ]),
                   _vm._v(" "),
                   _c("address", [
-                    _vm._v("\n                    Jawaban Benar: 20"),
-                    _c("br"),
-                    _vm._v("\n                    Jawaban Salah: 30"),
-                    _c("br"),
-                    _vm._v("\n                    Jawaban Kosong: 0"),
+                    _vm._v(
+                      "\n                    Jawaban Benar: " +
+                        _vm._s(hasils.Benar)
+                    ),
                     _c("br"),
                     _vm._v(
-                      "\n                    Nilai Anda : 40\n                  "
+                      "\n                    Jawaban Salah: " +
+                        _vm._s(hasils.Salah)
+                    ),
+                    _c("br"),
+                    _vm._v(
+                      "\n                    Jawaban Kosong: " +
+                        _vm._s(hasils.Kosong)
+                    ),
+                    _c("br"),
+                    _vm._v(
+                      "\n                    Nilai Anda : " +
+                        _vm._s(hasils.Nilai) +
+                        "\n                  "
                     )
                   ])
                 ])
@@ -57529,14 +57572,41 @@ var staticRenderFns = [
                   "a",
                   {
                     staticClass: "btn btn-circle btn-danger btn-xs",
-                    attrs: { href: "#", title: "Hapus" }
+                    attrs: { href: "#", title: "Hapus" },
+                    on: {
+                      click: function($event) {
+                        return _vm.hapus(hasils.id)
+                      }
+                    }
                   },
                   [_c("i", { staticClass: "fas fa-trash" })]
                 )
               ])
             ])
           ])
-        ])
+        }),
+        0
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "media-left" }, [
+      _c("a", { attrs: { href: "#" } }, [
+        _c("img", {
+          staticClass: "media-object",
+          attrs: {
+            src:
+              "https://cdn2.vectorstock.com/i/1000x1000/17/61/male-avatar-profile-picture-vector-10211761.jpg",
+            height: "100px",
+            width: "100px",
+            alt: "..."
+          }
+        })
       ])
     ])
   }
@@ -58551,7 +58621,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("Edit")]
+                    [_vm._v("Simpan")]
                   ),
                   _vm._v(" "),
                   _c(
