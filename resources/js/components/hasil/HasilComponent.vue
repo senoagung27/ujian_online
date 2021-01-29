@@ -10,7 +10,7 @@
                   <div class="media">
                     <div class="media-left">
                       <a href="#">
-                            <img class="media-object" src="https://www.unpak.ac.id/images/Logo_Unpak.jpg" height="100px" width="100px" alt="...">
+                            <img class="media-object" src="https://cdn2.vectorstock.com/i/1000x1000/17/61/male-avatar-profile-picture-vector-10211761.jpg" height="100px" width="100px" alt="...">
                         </a>
                     </div>
                     <div class="media-body">
